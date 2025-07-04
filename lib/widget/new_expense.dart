@@ -113,7 +113,14 @@ class _NewExpenseState extends State<NewExpense> {
                           ),
                         )
                         .toList(),
-                    onChanged: onChanged),
+                    onChanged: (value) {
+                      if (value == null) {
+                        return;
+                      }
+                      setState(() {
+                        selectedCategory = value;
+                      });
+                    }),
                 Spacer(),
                 TextButton(
                   onPressed: () {
