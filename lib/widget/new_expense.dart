@@ -50,6 +50,17 @@ class _NewExpenseState extends State<NewExpense> {
     });
   }
 
+  void submitExpenseData() {
+    final enteredAmount = double.tryParse(titleController.text);
+    final amountIsInvalid = enteredAmount == null || enteredAmount <= 0;
+
+    if (titleController.text.isEmpty ||
+        selectedDate == null ||
+        amountIsInvalid) {
+      //show error message
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -86,30 +97,14 @@ class _NewExpenseState extends State<NewExpense> {
             SizedBox(height: 16),
             Row(
               children: [
-                // DropdownButton(
-                //   value: selectedCategory,
-                //   items: Category.values
-                //       .map((category) => DropdownMenuItem(
-                //             value: category,
-                //             child: Text(category.name.toUpperCase()),
-                //           ))
-                //       .toList(),
-                //   onChanged: (value) {
-                //     if (value == null) {
-                //       return;
-                //     }
-                //     setState(() {
-                //       selectedCategory = value;
-                //     });
-                //   },
-                // ),
+                //dropdown
                 DropdownButton(
                     value: selectedCategory,
                     items: Category.values
                         .map(
                           (category) => DropdownMenuItem(
                             value: category,
-                            child: Text(category.name),
+                            child: Text(category.name.toUpperCase()),
                           ),
                         )
                         .toList(),
@@ -121,6 +116,7 @@ class _NewExpenseState extends State<NewExpense> {
                         selectedCategory = value;
                       });
                     }),
+
                 Spacer(),
                 TextButton(
                   onPressed: () {
@@ -130,10 +126,10 @@ class _NewExpenseState extends State<NewExpense> {
                 ),
                 SizedBox(width: 12),
                 ElevatedButton(
-                  onPressed: () {
-                    print(titleController.text);
-                    print(ammountControler.text);
-                  },
+                  onPressed: submitExpenseData,
+                  // print(titleController.text);
+                  // print(ammountControler.text);
+
                   child: Text('Save'),
                 ),
               ],
