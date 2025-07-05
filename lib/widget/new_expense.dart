@@ -23,19 +23,6 @@ class _NewExpenseState extends State<NewExpense> {
     super.dispose();
   }
 
-  // void presentDatePicker() async {
-  //   final now = DateTime.now();
-  //   final firstDate = DateTime(now.year - 1, now.month, now.day);
-  //   final pickedDate = await showDatePicker(
-  //     context: context,
-  //     firstDate: firstDate,
-  //     lastDate: now,
-  //   );
-  //   setState(() {
-  //     selectedDate = pickedDate;
-  //   });
-  // }
-
   void presentDatePicker() async {
     final now = DateTime.now();
     final firstDate = DateTime(now.year - 1, now.month, now.day);
