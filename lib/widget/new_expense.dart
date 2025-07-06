@@ -8,18 +8,17 @@ class NewExpense extends StatefulWidget {
   State<NewExpense> createState() => _NewExpenseState();
 }
 
+@override
 class _NewExpenseState extends State<NewExpense> {
   final titleController = TextEditingController();
-  final ammountControler = TextEditingController();
-  DateTime? selectedDate;
-  // Category selectedCategory = Category.work;
-
-  Category selectedCategory = Category.leisure;
+  final amountController = TextEditingController();
+  DateTime? selectDate;
+  Category selectedCategory = Category.food;
 
   @override
   void dispose() {
     titleController.dispose;
-    ammountControler.dispose;
+    amountController.dispose;
     super.dispose();
   }
 
@@ -31,20 +30,31 @@ class _NewExpenseState extends State<NewExpense> {
       firstDate: firstDate,
       lastDate: now,
     );
-
     setState(() {
-      selectedDate = pickedDate;
+      selectDate = pickedDate;
     });
   }
 
   void submitExpenseData() {
-    final enteredAmount = double.tryParse(titleController.text);
+    final enteredAmount = double.tryParse(amountController.text);
     final amountIsInvalid = enteredAmount == null || enteredAmount <= 0;
 
-    if (titleController.text.isEmpty ||
-        selectedDate == null ||
-        amountIsInvalid) {
-      //show error message
+    if (titleController.text.isEmpty || selectDate == null || amountIsInvalid) {
+      //show eror message
+      showDialog(
+        context: context,
+        builder: (ctx) => AlertDialog(
+          title: Text('Invalid Input'),
+          content: Text('pastikan anda sudah mengisi form'),
+          actions: [
+            TextButton(
+                onPressed: () {
+                  Navigator.pop(ctx);
+                },
+                child: Text('Mengerti'))
+          ],
+        ),
+      );
     }
   }
 
@@ -56,27 +66,26 @@ class _NewExpenseState extends State<NewExpense> {
           children: [
             TextField(
               controller: titleController,
+              decoration: InputDecoration(labelText: 'Title'),
               maxLength: 50,
-              decoration: InputDecoration(label: Text('input')),
             ),
             Row(
               children: [
                 Expanded(
                   child: TextField(
-                    controller: ammountControler,
-                    decoration:
-                        InputDecoration(labelText: 'ammount', prefixText: '\$'),
-                  ),
+                      controller: amountController,
+                      decoration: InputDecoration(
+                          labelText: 'amount', prefixText: '\$'),
+                      keyboardType: TextInputType.number),
                 ),
                 Row(
                   children: [
-                    Text(selectedDate == null
-                        ? 'no selected date'
-                        : formatter.format(selectedDate!)),
+                    Text(selectDate == null
+                        ? 'no selected date '
+                        : formatter.format(selectDate!)),
                     IconButton(
-                      onPressed: presentDatePicker,
-                      icon: Icon(Icons.calendar_month_outlined),
-                    )
+                        onPressed: presentDatePicker,
+                        icon: Icon(Icons.calendar_month))
                   ],
                 )
               ],
@@ -84,7 +93,6 @@ class _NewExpenseState extends State<NewExpense> {
             SizedBox(height: 16),
             Row(
               children: [
-                //dropdown
                 DropdownButton(
                     value: selectedCategory,
                     items: Category.values
@@ -103,24 +111,22 @@ class _NewExpenseState extends State<NewExpense> {
                         selectedCategory = value;
                       });
                     }),
-
                 Spacer(),
                 TextButton(
-                  onPressed: () {
-                    Navigator.pop(context);
-                  },
-                  child: Text('cancle'),
-                ),
-                SizedBox(width: 12),
+                    onPressed: () {
+                      Navigator.pop(context);
+                    },
+                    child: Text('Cancle')),
+                SizedBox(width: 8),
                 ElevatedButton(
-                  onPressed: submitExpenseData,
-                  // print(titleController.text);
-                  // print(ammountControler.text);
-
-                  child: Text('Save'),
-                ),
+                    onPressed: () {
+                      submitExpenseData();
+                      // print(amountControler.text);
+                      // print(titleController.text);
+                    },
+                    child: Text('Save'))
               ],
-            ),
+            )
           ],
         ));
   }
