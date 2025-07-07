@@ -14,24 +14,25 @@ class Expenses extends StatefulWidget {
 class _ExpensesState extends State<Expenses> {
   final List<Expense> _pengeluaranBaru = [
     Expense(
-      title: 'flutter course',
-      amount: 15,
+      title: 'trip to japan',
+      amount: 200,
       date: DateTime.now(),
       category: Category.leisure,
-    ),
-    Expense(
-      title: 'trip to japan',
-      amount: 2000,
-      date: DateTime.now(),
-      category: Category.travel,
-    ),
+    )
   ];
 
-  void addExpense() {
+  void openOverlayExpense() {
     showModalBottomSheet(
       context: context,
-      builder: (ctx) => NewExpense(),
+      //4
+      builder: (ctx) => NewExpense(onAddExpense: addExpense),
     );
+  }
+
+  void addExpense(Expense expense) {
+    setState(() {
+      _pengeluaranBaru.add(expense);
+    });
   }
 
   @override
@@ -40,7 +41,7 @@ class _ExpensesState extends State<Expenses> {
         appBar: AppBar(
           title: Text('Flutter Expense Tracker'),
           actions: [
-            IconButton(onPressed: addExpense, icon: Icon(Icons.add)),
+            IconButton(onPressed: openOverlayExpense, icon: Icon(Icons.add)),
           ],
         ),
         body: Padding(
