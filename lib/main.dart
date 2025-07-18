@@ -1,15 +1,42 @@
 import 'package:expense_tracker/widget/expenses.dart';
 import 'package:flutter/material.dart';
 
+var kColorScheme = ColorScheme.fromSeed(seedColor: Colors.greenAccent);
+
 void main() {
-  runApp(const MainApp());
-}
+  runApp(
+    MaterialApp(
+      theme: ThemeData(
+        colorScheme: kColorScheme,
+        useMaterial3: true,
 
-class MainApp extends StatelessWidget {
-  const MainApp({super.key});
+        // Appbar style
+        appBarTheme: AppBarTheme(
+          backgroundColor: kColorScheme.onPrimaryContainer,
+          foregroundColor: kColorScheme.primaryContainer,
+        ),
 
-  @override
-  Widget build(BuildContext context) {
-    return const MaterialApp(home: Expenses());
-  }
+        // Card style
+        cardTheme: CardTheme().copyWith(
+          color: kColorScheme.secondaryContainer,
+        ),
+
+        //button style
+        elevatedButtonTheme: ElevatedButtonThemeData(
+          style: ElevatedButton.styleFrom(
+            backgroundColor: kColorScheme.primaryContainer,
+          ),
+        ),
+
+        //text style
+        textTheme: ThemeData().textTheme.copyWith(
+              titleLarge: TextStyle(
+                  fontWeight: FontWeight.bold,
+                  color: kColorScheme.onSecondaryContainer,
+                  fontSize: 20),
+            ),
+      ),
+      home: Expenses(),
+    ),
+  );
 }

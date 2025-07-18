@@ -3,10 +3,10 @@ import 'package:flutter/material.dart';
 
 class NewExpense extends StatefulWidget {
   const NewExpense({super.key, required this.onAddExpense});
-
-//2
+  // //menambahkan expense (part 2)
   final void Function(Expense expense) onAddExpense;
 
+  //2
   @override
   State<NewExpense> createState() => _NewExpenseState();
 }
@@ -42,35 +42,40 @@ class _NewExpenseState extends State<NewExpense> {
     final enteredAmount = double.tryParse(amountController.text);
     final amountIsInvalid = enteredAmount == null || enteredAmount <= 0;
 
-    if (titleController.text.isEmpty || selectDate == null || amountIsInvalid) {
+    if (titleController.text.trim().isEmpty ||
+        selectDate == null ||
+        amountIsInvalid) {
       showDialog(
-          context: context,
-          builder: (ctx) => AlertDialog(
-                title: Text('invalid data'),
-                content: Text('pastikan anda sudah mengisi form'),
-                actions: [
-                  TextButton(
-                      onPressed: () {
-                        Navigator.pop(context);
-                      },
-                      child: Text('Mengerti'))
-                ],
-              ));
+        context: context,
+        builder: (ctx) => AlertDialog(
+          title: Text('invalid data'),
+          content: Text('pastikan anda sudah mengisi form'),
+          actions: [
+            TextButton(
+                onPressed: () {
+                  Navigator.pop(context);
+                },
+                child: Text('Mengerti'))
+          ],
+        ),
+      );
       return;
     }
 
-    //3
+    //menambahkan expense (part 3)
     widget.onAddExpense(Expense(
         title: titleController.text,
         amount: enteredAmount,
         date: selectDate!,
         category: selectedCategory));
+
+    Navigator.pop(context);
   }
 
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: EdgeInsets.all(16),
+      padding: EdgeInsets.fromLTRB(16, 48, 16, 48),
       child: Column(
         children: [
           TextField(
